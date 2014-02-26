@@ -36,9 +36,11 @@ module CapistranoResque
         def start_command(queue, pid)
           "cd #{current_path} && RAILS_ENV=#{rails_env} QUEUE=\"#{queue}\" \
            PIDFILE=#{pid} BACKGROUND=yes VERBOSE=1 INTERVAL=#{interval} \
+           nohup \
            #{fetch(:bundle_cmd, "bundle")} exec rake \
            #{"environment" if fetch(:resque_environment_task)} \
-           resque:work"
+           resque:work \
+           >/dev/null"
         end
 
         def stop_command
